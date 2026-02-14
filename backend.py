@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import os
 import requests
 import json
@@ -21,6 +22,7 @@ if not OPENAI_API_KEY:
     raise RuntimeError("Missing OPENAI_API_KEY. Add it to secrets.txt or Render environment variables.")
 
 app = Flask(__name__)
+CORS(app) # Enable CORS for all routes
 
 # Your AI assistant context
 ABOUT_ME_CONTEXT = """
@@ -99,5 +101,5 @@ def home():
     return "Sara's AI backend is running!"
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 5001))
     app.run(host="0.0.0.0", port=port)
