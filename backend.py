@@ -3,19 +3,20 @@ import os
 import requests
 import json
 
-# Load local secrets from secrets.txt (for local dev)
-def load_local_secrets():
+# Load API key: checks secrets.txt first, then environment variables (for Render)
+def get_openai_api_key():
+    # 1. Try to get from secrets.txt
     if os.path.exists("secrets.txt"):
         with open("secrets.txt") as f:
             for line in f:
-                if "=" in line:
-                    key, value = line.strip().split("=", 1)
-                    os.environ[key] = value
+                if line.startswith("OPENAI_API_KEY="):
+                    return line.strip().split("=", 1)[1]
+    
+    # 2. Fallback to environment variable (Render)
+    return os.environ.get("OPENAI_API_KEY")
 
-load_local_secrets()
+OPENAI_API_KEY = get_openai_api_key()
 
-# Get API key from environment variable
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 if not OPENAI_API_KEY:
     raise RuntimeError("Missing OPENAI_API_KEY. Add it to secrets.txt or Render environment variables.")
 
