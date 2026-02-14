@@ -48,6 +48,9 @@ coverage.xml
 *.cover
 *.py.cover
 .hypothesis/
+
+# Local secrets
+secrets.txt
 .pytest_cache/
 cover/
 
